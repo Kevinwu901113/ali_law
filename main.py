@@ -1,61 +1,76 @@
-#coding=utf-8
-from tools import tools
 import json
-from get_tool import tool_get_response,strat,confirm,seperate,prase_json_from_response,QUESTION_CLASS
-from use_tool import tool_use_response
-from generate_ans import generate_ans
-#获取工具函数
-#content = "请问批发业注册资本最高的前3家公司的名称以及他们的注册资本（单位为万元）？"
-with open('question(1).json', 'r', encoding='utf-8') as f:
-    lines = f.readlines()
-data = [json.loads(line.strip()) for line in lines]
-ff=0
-for q in data:
-    try:
-        ans = q['answer']
-        continue
-    except:
-        question = q['question']
-        print(q['id'],question)
-        try:
-            strat()
-            prompt=QUESTION_CLASS.format(question=question)
-            
-            response = prase_json_from_response(seperate(prompt))
-            
-            if response["category_name"] == "direct_answer":
-                answer = seperate(question)
-            else:
-                response_messge = tool_get_response(question)   #response.choices[0].message
-                print(response_messge)
-                if response_messge.tool_calls==None:
-                    response_messge=confirm(question)   #response.choices[0].message
-                    print(response_messge)
-                if response_messge.tool_calls!=None:
-                    #调用函数
-                    answer = tool_use_response(response_messge)     #rsp.json()               
-                #生成答案
-                answer=generate_ans(question,response_messge,answer).content
-                
-        except:
-            answer = q['question']
-        q['answer'] = answer
-        print(q['answer'])
-        ff=ff+1
-        if ff%10==0:
-            with open(f"submission{ff}.json", "w", encoding="utf-8") as f:
-                for item in data:
-                    f.write(json.dumps(item, ensure_ascii=False) + "\n")
+import logging
+from LLM import reply, parse_json_from_response
+from propmt import GET_INFORMERTION_CLASS, QUESTION_CLASS
+from handlers import (
+    handle_company_info,
+    handle_get_company_info,
+    handle_company_register_name,
+    handle_get_legal_document,
+    handle_get_court_info,
+    handle_get_lawfirm_info,
+    handle_get_address_info,
+    handle_get_temp_info
+)
 
+# 配置日志记录
+logging.basicConfig(level=logging.INFO)
 
-with open("submission.json", "w", encoding="utf-8") as f:
-    for item in data:
-        f.write(json.dumps(item, ensure_ascii=False) + "\n")
+def start(question):
+    prompt = QUESTION_CLASS.format(question=question)
+    initial_response = parse_json_from_response(reply(prompt))
 
+    if not initial_response:
+        logging.error("Failed to parse initial response")
+        return None
 
-       
-          
+    if initial_response.get("category_name") == "direct_answer":
+        return reply(question)
     
+    prompt = GET_INFORMERTION_CLASS.format(question=question)
+    info_response = parse_json_from_response(reply(prompt))
+    
+    if not info_response:
+        logging.error("Failed to parse information response")
+        return None
 
-   
+    return process_info_response(info_response, question)
 
+def process_info_response(response, question):
+    info_number = response.get("information_number")
+    if info_number in ["1", 1]:
+        return handle_company_info(question)
+    elif info_number in ["2", 2]:
+        return handle_get_company_info(question, "上市公司简称")
+    elif info_number in ["3", 3]:
+        return handle_get_company_info(question, "公司简称")
+    elif info_number in ["4", 4]:
+        return handle_company_register_name(question)
+    elif info_number in ["5", 5]:
+        return handle_get_legal_document(question)
+    elif info_number in ["6", 6]:
+        return handle_get_court_info(question)
+    elif info_number in ["7", 7]:
+        return handle_get_court_info(question)
+    elif info_number in ["8", 8]:
+        return handle_get_lawfirm_info(question)
+    elif info_number in ["9", 9]:
+        return handle_get_address_info(question)
+    elif info_number in ["10", 10]:
+        return handle_get_address_info(question)
+    elif info_number in ["11", 11]:
+        return handle_get_temp_info(question)
+    else:
+        logging.warning(f"Unhandled information number: {info_number}")
+        return None
+
+def main():
+    question = "91310000677833266F的公司全称是？该公司的涉案次数为？（起诉日期在2020年）作为被起诉人的次数及总金额为？"
+    answer = start(question)
+    if answer:
+        print("Answer:", answer)
+    else:
+        logging.error("Failed to generate a valid answer")
+
+if __name__ == "__main__":
+    main()
