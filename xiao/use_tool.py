@@ -1,6 +1,6 @@
 import requests
 import json
-
+from key import team_key
 domain = "comm.chatglm.cn"
 
 def tool_use_response(response_message):
@@ -22,7 +22,7 @@ def tool_use_response(response_message):
         url = f"https://{domain}/law_api/{using_tool}"
         headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+        'Authorization': f'Bearer {team_key}'
         }
         rsp = requests.post(url, json=data, headers=headers)
 
@@ -51,7 +51,7 @@ def tool_use_response(response_message):
         url = f"https://{domain}/law_api/{using_tool}"
         headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+        'Authorization': f'Bearer {team_key}'
         }
         rsp = requests.post(url, json=data, headers=headers)
         if rsp.json()!=[] and isinstance(rsp.json(), list):
@@ -73,7 +73,7 @@ def tool_use_response(response_message):
         url = f"https://{domain}/law_api/{using_tool}"
         headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+        'Authorization': f'Bearer {team_key}'
         }
         rsp = requests.post(url, json=data, headers=headers)
         if rsp.json()!=[] and isinstance(rsp.json(), list):
@@ -97,7 +97,7 @@ def tool_use_response(response_message):
         url = f"https://{domain}/law_api/{using_tool}"
         headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+        'Authorization': f'Bearer {team_key}'
         }
         rsp = requests.post(url, json=data, headers=headers)
         print(rsp.json())
@@ -110,7 +110,7 @@ def tool_use_response(response_message):
     url = f"https://{domain}/law_api/{using_tool}"
     headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+    'Authorization': f'Bearer {team_key}'
     }
     rsp = requests.post(url, json=data, headers=headers)
     if rsp.json()==[]:
@@ -127,7 +127,7 @@ def search1(using_tool,key,value):
     url = f"https://{domain}/law_api/{using_tool}"
     headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+    'Authorization': f'Bearer {team_key}'
     }
     
     rsp = requests.post(url, json=data, headers=headers)
@@ -158,7 +158,7 @@ def search2(using_tool,value,company_names):
             url = f"https://{domain}/law_api/{using_tool}"
             headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+            'Authorization': f'Bearer {team_key}'
             }
             rsp = requests.post(url, json=data, headers=headers)
             data1=rsp.json()
@@ -234,7 +234,7 @@ def tool_use_response_correct(response_message):
                     url = f"https://{domain}/law_api/get_sub_company_info"
                     headers = {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3'
+                    'Authorization': f'Bearer {team_key}'
                     }
                     rsp = requests.post(url, json=data, headers=headers)
                     ans.append(rsp.json())

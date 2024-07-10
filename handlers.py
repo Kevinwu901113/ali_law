@@ -3,6 +3,7 @@ import re
 from LLM import reply, parse_json_from_response
 from api import api
 from propmt import COMPANY_NAME_CLASS, GET_KEY_CLASS
+from typing import Optional
 
 def handle_company_info(question):
     prompt = COMPANY_NAME_CLASS.format(question=question)
@@ -111,9 +112,18 @@ def handle_get_temp_info(question):
     # 示例处理逻辑
     return
 
-def extract_company_id(question):
-    match = re.search(r"(\d{15,18}[0-9Xx])", question)
-    return match.group(1) if match else None
+def extract_company_id(question: str) -> Optional[str]:
+    print(f"Received question: {question}")
+    
+    # 检查整个问题字符串，匹配统一社会信用代码
+    match = re.search(r"\b([0-9A-Za-z]{18})\b", question)
+
+    if match:
+        print(f"Matched company ID: {match.group(1)}")
+        return match.group(1)
+    else:
+        print("No company ID found in the question.")
+        return None
 
 def api_with_retries(data, api_type, retries=3):
     for attempt in range(retries):
@@ -124,3 +134,8 @@ def api_with_retries(data, api_type, retries=3):
         except Exception as e:
             logging.error(f"Attempt {attempt + 1} failed: {e}")
     return {"error": f"Failed after {retries} attempts"}
+
+
+if __name__ == "__main__":
+    question = "91310000677833266F的公司全称是？该公司的涉案次数为？（起诉日期在2020年）作为被起诉人的次数及总金额为？"
+    extract_company_id(question)

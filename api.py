@@ -1,12 +1,12 @@
 import requests
 import logging
 import os
-
+from key import team_key
 # 配置日志记录
 logging.basicConfig(level=logging.INFO)
 
 # 从环境变量中获取API密钥
-API_KEY = os.getenv('API_KEY', 'DD588018ADCC373065941C2E935D04595E3C9CA65F8873A3')
+API_KEY = team_key
 
 headers = {
     'Content-Type': 'application/json',

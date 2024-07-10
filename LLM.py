@@ -3,12 +3,13 @@ import json
 import re
 import logging
 import os
+from key import zhipu
 
 # 配置日志记录
 logging.basicConfig(level=logging.INFO)
 
 # 从环境变量中获取API密钥
-API_KEY = os.getenv('ZHIPUAI_API_KEY', '33dcd2e786c4567b9f97a3ac9d38dad0.RMsTbtFmlmtq8zFa')
+API_KEY = zhipu
 client = ZhipuAI(api_key=API_KEY)
 
 def reply(content):   

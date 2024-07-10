@@ -2,8 +2,9 @@ from tools import tools
 from zhipuai import ZhipuAI
 import json
 import re
+from key import zhipu
 
-client = ZhipuAI(api_key="33dcd2e786c4567b9f97a3ac9d38dad0.RMsTbtFmlmtq8zFa") # 请填写您自己的APIKey
+client = ZhipuAI(api_key=zhipu) # 请填写您自己的APIKey
 
 def tool_get_response(content:str):
     tools_list=tools()

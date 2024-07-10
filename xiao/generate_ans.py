@@ -2,9 +2,10 @@ from tools import tools
 from get_tool import tool_get_response,confirm
 from zhipuai import ZhipuAI
 from use_tool import tool_use_response
+from key import zhipu
 import re
 
-client = ZhipuAI(api_key="33dcd2e786c4567b9f97a3ac9d38dad0.RMsTbtFmlmtq8zFa") # 请填写您自己的APIKey
+client = ZhipuAI(api_key=zhipu) # 请填写您自己的APIKey
 
 def generate_ans(content,response_message,rsp):
     

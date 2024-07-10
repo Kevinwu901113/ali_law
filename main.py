@@ -2,16 +2,7 @@ import json
 import logging
 from LLM import reply, parse_json_from_response
 from propmt import GET_INFORMERTION_CLASS, QUESTION_CLASS
-from handlers import (
-    handle_company_info,
-    handle_get_company_info,
-    handle_company_register_name,
-    handle_get_legal_document,
-    handle_get_court_info,
-    handle_get_lawfirm_info,
-    handle_get_address_info,
-    handle_get_temp_info
-)
+from handlers import *
 
 # 配置日志记录
 logging.basicConfig(level=logging.INFO)
