@@ -1,25 +1,21 @@
 import requests
-import logging
-import os
+
 from key import team_key
-# 配置日志记录
-logging.basicConfig(level=logging.INFO)
-
-# 从环境变量中获取API密钥
-API_KEY = team_key
-
+from fuzzywuzzy import process
 headers = {
-    'Content-Type': 'application/json',
-    'Authorization': f'Bearer {API_KEY}'
-}
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {team_key}'
+        }
 domain = "comm.chatglm.cn"
+def api(data,type):
+    url=f"https://{domain}/law_api/s1_b/{type}"
+    rsp = requests.post(url, json=data, headers=headers)
+    
+    return rsp.json()
 
-def api(data, type):
-    url = f"https://{domain}/law_api/s1_b/{type}"
-    try:
-        rsp = requests.post(url, json=data, headers=headers)
-        rsp.raise_for_status()  # 检查响应状态码
-        return rsp.json()
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Request failed: {e}")
-        return {"error": "Request failed"}
+def match1(key,key_list):
+        ans=[]
+        for k in key:
+              ans.append(process.extractOne(k, key_list))
+        
+        return ans
