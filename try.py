@@ -26,5 +26,5 @@ def api(data, type):
         return {"error": "Request failed"}
 
 if __name__ == "__main__":
-    try1 = api({"query_conds": {"关联公司": "上海晨光文具股份有限公司"}, "need_fields": []}, "get_legal_document_list")
+    try1 = api({"query_conds": {"关联上市公司全称": "四川青石建设有限公司"}, "need_fields": []}, "get_sub_company_info_list")
     print(try1)

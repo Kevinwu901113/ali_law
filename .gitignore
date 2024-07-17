@@ -159,3 +159,22 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 key.py
+xiao/use_tool.py
+xiao/tools.py
+xiao/question(1).json
+xiao/propmt.py
+xiao/main.py
+xiao/LLM.py
+xiao/handlers.py
+xiao/get_tool.py
+xiao/generate_ans.py
+xiao/B/propmt.py
+xiao/B/main.py
+xiao/B/LLM.py
+xiao/B/api.py
+xiao/api.py
+xiao/propmt.py
+xiao/main.py
+xiao/LLM.py
+xiao/handlers.py
+xiao/api.py
